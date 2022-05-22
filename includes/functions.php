@@ -241,7 +241,7 @@ function get_random_string($length): string
  */
 function is_steam_id_valid($steamId): bool
 {
-    return !!preg_match('/\bSTEAM_([0-9]):([0-9]):([0-9])+$/', $steamId);
+    return pattern('\bSTEAM_([0-9]):([0-9]):([0-9])+$')->test($steamId);
 }
 
 /**
@@ -262,7 +262,7 @@ function seconds_to_time($seconds): string
  */
 function custom_mb_str_split($string): array
 {
-    return preg_split('/(?<!^)(?!$)/u', $string);
+    return pattern('(?<!^)(?!$)', 'u')->split($string);
 }
 
 /**

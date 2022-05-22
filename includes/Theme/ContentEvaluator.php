@@ -4,6 +4,8 @@ namespace App\Theme;
 
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
+use TRegx\CleanRegex\Match\Details\Detail;
+use TRegx\CleanRegex\Pattern;
 
 class ContentEvaluator
 {
@@ -21,21 +23,19 @@ class ContentEvaluator
 
     public function evaluate(string $text, array $data = []): string
     {
-        return preg_replace_callback(
-            "/({{(?P<safe>.+?)}}|{!!(?P<simple>.+?)!!})/s",
-            function (array $matches) use ($data) {
-                if (array_get($matches, "simple")) {
-                    return $this->evalMatch($matches["simple"], $data);
+       return Pattern::of('({{(?<safe>.+?)}}|{!!(?<simple>.+?)!!})'. 's')
+            ->replace($text)
+            ->callback(function (Detail $match)  use ($data) {
+                if ($match->matched('simple')) {
+                    return $this->evalMatch($match->get("simple"), $data);
                 }
 
-                if (array_get($matches, "safe")) {
-                    return $this->evalMatchSafely($matches["safe"], $data);
+                if ($match->matched('safe')) {
+                    return $this->evalMatchSafely($match->get("safe"), $data);
                 }
 
                 return "[#ERROR_MATCH]";
-            },
-            $text
-        );
+            });
     }
 
     private function evalMatchSafely(string $match, array $data): string

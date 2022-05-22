@@ -4,6 +4,7 @@ namespace App\Install;
 use App\Loggers\FileLogger;
 use App\Support\Database;
 use InvalidArgumentException;
+use TRegx\CleanRegex\Pattern;
 
 abstract class Migration
 {
@@ -52,7 +53,7 @@ abstract class Migration
         while (feof($path) === false) {
             $query[] = fgets($path);
 
-            if (preg_match("~" . preg_quote($delimiter, "~") . '\s*$~iS', end($query)) === 1) {
+            if (Pattern::inject('@\s*$', 'iS', [$delimiter])->test(end($query))) {
                 $query = trim(implode("", $query));
                 $queries[] = $query;
             }

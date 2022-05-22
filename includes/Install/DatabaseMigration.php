@@ -102,7 +102,7 @@ EOF
                 ->query("SELECT `name` FROM `ss_migrations` ORDER BY id DESC LIMIT 1")
                 ->fetchColumn();
         } catch (PDOException $e) {
-            if (preg_match("/Table .*ss_migrations.* doesn't exist/", $e->getMessage())) {
+            if (pattern("Table .*ss_migrations.* doesn't exist")->test($e->getMessage())) {
                 return "";
             }
 

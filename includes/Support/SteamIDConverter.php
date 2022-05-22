@@ -82,17 +82,17 @@ final class SteamIDConverter
 
     public function isSteamID(string $value): bool
     {
-        return preg_match($this::REGEX_STEAMID, $value);
+        return pattern($this::REGEX_STEAMID)->test($value);
     }
 
     public function isSteamID64(string $value): bool
     {
-        return preg_match($this::REGEX_STEAMID64, $value);
+        return pattern($this::REGEX_STEAMID64)->test($value);
     }
 
     public function isSteamID3(string $value): bool
     {
-        return preg_match($this::REGEX_STEAMID3, $value);
+        return pattern($this::REGEX_STEAMID3)->test($value);
     }
 
     public function profileURL(string $value): string

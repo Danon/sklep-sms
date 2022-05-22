@@ -140,7 +140,7 @@ EOF
         }
 
         // SID can start with STEAM_0 or STEAM_1. They are used interchangeably.
-        $steamIdSuffix = preg_replace("/^STEAM_[01]/", "", $steamId);
+        $steamIdSuffix = pattern("^STEAM_[01]")->prune($steamId);
 
         $statement = $this->db->statement("SELECT * FROM `ss_users` WHERE `steam_id` IN (?, ?)");
         $statement->bindAndExecute(["STEAM_0{$steamIdSuffix}", "STEAM_1{$steamIdSuffix}"]);
